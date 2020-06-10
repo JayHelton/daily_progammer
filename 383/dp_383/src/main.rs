@@ -8,14 +8,13 @@ fn main() {
 mod problem_solving {
     pub fn repeats(a: &str) -> usize {
         let mut a_char_vec: Vec<char> = a.chars().collect();
-
         let mut count = 0;
         let mut counter = 0;
 
         loop {
             count += 1;
 
-            let state: String = a_char_vec.iter().collect::<String>();
+            let state: String = a_char_vec.iter().collect();
             if state == a.to_string() {
                 counter += 1;
             }
@@ -31,13 +30,12 @@ mod problem_solving {
 
     pub fn same_necklace(a: &str, b: &str) -> bool {
         let mut a_char_vec: Vec<char> = a.chars().collect();
-
         let mut count = 0;
 
         loop {
             count += 1;
 
-            let state: String = a_char_vec.iter().collect::<String>();
+            let state: String = a_char_vec.iter().collect();
             if state == b.to_string() {
                 return true;
             }
