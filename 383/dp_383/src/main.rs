@@ -3,28 +3,31 @@ use std::fs::File;
 use std::io::{BufRead, BufReader};
 
 fn main() {
-    // This definitely does not work and is uuuuugly
+    // This works but is very very slow
     let file = File::open("./enable1.txt").expect("couldn't open file");
     let lines: Vec<String> = BufReader::new(file)
         .lines()
         .map(|x| x.expect("couldnt parse line"))
         .collect();
 
-    let new: Vec<Vec<String>> = vec![];
+    let new: Vec<String> = vec![];
     let result = lines
         .iter()
         .fold(new, |mut acc, x| {
-            acc.push(
-                lines
-                    .clone()
-                    .into_iter()
-                    .filter(|y| same_necklace(x.to_string(), y.to_string()))
-                    .collect(),
-            );
-            return acc;
-        })
-        .sort_by(|x, y| x.len().cmp(&y.len()))
-        .max_by(|x, y| x.len() < y.len());
+            // Find all the matches with the necklace challenge
+            let matches: Vec<String> = lines
+                .clone()
+                .into_iter()
+                .filter(|y| same_necklace(x.to_string(), y.to_string()))
+                .collect();
+
+            return if acc.len() < matches.len() {
+                println!("{} - {:?}", x, matches);
+                matches
+            } else {
+                acc
+            }
+        });
 
     println!("{:?}", result)
 }
