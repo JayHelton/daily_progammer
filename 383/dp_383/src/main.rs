@@ -18,7 +18,7 @@ fn main() {
             .into_iter()
             .filter(|y| same_necklace(x.to_string(), y.to_string()))
             .collect();
-
+        // I think what needs to happen is to only look forward in the list versus full iteration?
         return if acc.len() < matches.len() {
             println!("{} - {:?}", x, matches);
             matches
