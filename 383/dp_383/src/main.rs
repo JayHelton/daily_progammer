@@ -1,12 +1,36 @@
 use crate::problem_solving::{repeats, same_necklace};
+use std::fs::File;
+use std::io::{BufRead, BufReader};
 
 fn main() {
-    println!("{}", repeats(""));
-    println!("{}", same_necklace("", ""));
+    // This definitely does not work and is uuuuugly
+    let file = File::open("./enable1.txt").expect("couldn't open file");
+    let lines: Vec<String> = BufReader::new(file)
+        .lines()
+        .map(|x| x.expect("couldnt parse line"))
+        .collect();
+
+    let new: Vec<Vec<String>> = vec![];
+    let result = lines
+        .iter()
+        .fold(new, |mut acc, x| {
+            acc.push(
+                lines
+                    .clone()
+                    .into_iter()
+                    .filter(|y| same_necklace(x.to_string(), y.to_string()))
+                    .collect(),
+            );
+            return acc;
+        })
+        .sort_by(|x, y| x.len().cmp(&y.len()))
+        .max_by(|x, y| x.len() < y.len());
+
+    println!("{:?}", result)
 }
 
 mod problem_solving {
-    pub fn repeats(a: &str) -> usize {
+    pub fn repeats(a: String) -> usize {
         let mut a_char_vec: Vec<char> = a.chars().collect();
         let mut count = 0;
         let mut counter = 0;
@@ -19,7 +43,7 @@ mod problem_solving {
                 counter += 1;
             }
 
-            if a_char_vec.len() <= count  {
+            if a_char_vec.len() <= count {
                 break;
             }
 
@@ -28,7 +52,7 @@ mod problem_solving {
         return counter;
     }
 
-    pub fn same_necklace(a: &str, b: &str) -> bool {
+    pub fn same_necklace(a: String, b: String) -> bool {
         let mut a_char_vec: Vec<char> = a.chars().collect();
         let mut count = 0;
 
@@ -40,12 +64,11 @@ mod problem_solving {
                 return true;
             }
 
-            if a_char_vec.len() <= count  {
+            if a_char_vec.len() <= count {
                 break;
             }
 
             a_char_vec.rotate_left(1);
-
         }
         return false;
     }
@@ -56,87 +79,90 @@ mod problem_solving {
 
         #[test]
         fn test_repeat_1() {
-            assert_eq!(repeats("abc"), 1);
+            assert_eq!(repeats("abc".to_string()), 1);
         }
 
         #[test]
         fn test_repeat_2() {
-            assert_eq!(repeats("abcabcabc"), 3);
+            assert_eq!(repeats("abcabcabc".to_string()), 3);
         }
 
         #[test]
         fn test_repeat_3() {
-            assert_eq!(repeats("abcabcabcx"), 1);
+            assert_eq!(repeats("abcabcabcx".to_string()), 1);
         }
 
         #[test]
         fn test_repeat_4() {
-            assert_eq!(repeats("aaaaaa"), 6);
+            assert_eq!(repeats("aaaaaa".to_string()), 6);
         }
 
         #[test]
         fn test_repeat_5() {
-            assert_eq!(repeats("a"), 1);
+            assert_eq!(repeats("a".to_string()), 1);
         }
 
         #[test]
         fn test_repeat_6() {
-            assert_eq!(repeats(""), 1);
+            assert_eq!(repeats("".to_string()), 1);
         }
 
         #[test]
         fn test_same_necklace_1() {
-            assert!(same_necklace("nicole", "icolen"));
+            assert!(same_necklace("nicole".to_string(), "icolen".to_string()));
         }
 
         #[test]
         fn test_same_necklace_2() {
-            assert!(same_necklace("nicole", "lenico"));
+            assert!(same_necklace("nicole".to_string(), "lenico".to_string()));
         }
 
         #[test]
         fn test_same_necklace_3() {
-            assert!(!same_necklace("nicole", "coneli"));
+            assert!(!same_necklace("nicole".to_string(), "coneli".to_string()));
         }
 
         #[test]
         fn test_same_necklace_4() {
-            assert!(same_necklace("aabaaaaabaab", "aabaabaabaaa"));
+            assert!(same_necklace(
+                "aabaaaaabaab".to_string(),
+                "aabaabaabaaa".to_string()
+            ));
         }
 
         #[test]
         fn test_same_necklace_5() {
-            assert!(!same_necklace("abc", "cba"));
+            assert!(!same_necklace("abc".to_string(), "cba".to_string()));
         }
 
         #[test]
         fn test_same_necklace_6() {
-            assert!(!same_necklace("xxyyy", "xxxyy"));
+            assert!(!same_necklace("xxyyy".to_string(), "xxxyy".to_string()));
         }
 
         #[test]
         fn test_same_necklace_7() {
-            assert!(!same_necklace("xyxxz", "xxyxz"));
+            assert!(!same_necklace("xyxxz".to_string(), "xxyxz".to_string()));
         }
 
         #[test]
         fn test_same_necklace_8() {
-            assert!(same_necklace("x", "x"));
+            assert!(same_necklace("x".to_string(), "x".to_string()));
         }
 
         #[test]
         fn test_same_necklace_9() {
-            assert!(!same_necklace("x", "xx"));
+            assert!(!same_necklace("x".to_string(), "xx".to_string()));
         }
 
         #[test]
         fn test_same_necklace_10() {
-            assert!(!same_necklace("x", ""));
+            assert!(!same_necklace("x".to_string(), "".to_string()));
         }
 
         #[test]
         fn test_same_necklace_11() {
-            assert!(same_necklace("", ""));
+            assert!(same_necklace("".to_string(), "".to_string()));
         }
     }
 }
