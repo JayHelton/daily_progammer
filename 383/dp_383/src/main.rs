@@ -11,23 +11,21 @@ fn main() {
         .collect();
 
     let new: Vec<String> = vec![];
-    let result = lines
-        .iter()
-        .fold(new, |mut acc, x| {
-            // Find all the matches with the necklace challenge
-            let matches: Vec<String> = lines
-                .clone()
-                .into_iter()
-                .filter(|y| same_necklace(x.to_string(), y.to_string()))
-                .collect();
+    let result = lines.iter().fold(new, |acc, x| {
+        // Find all the matches with the necklace challenge
+        let matches: Vec<String> = lines
+            .clone()
+            .into_iter()
+            .filter(|y| same_necklace(x.to_string(), y.to_string()))
+            .collect();
 
-            return if acc.len() < matches.len() {
-                println!("{} - {:?}", x, matches);
-                matches
-            } else {
-                acc
-            }
-        });
+        return if acc.len() < matches.len() {
+            println!("{} - {:?}", x, matches);
+            matches
+        } else {
+            acc
+        };
+    });
 
     println!("{:?}", result)
 }
