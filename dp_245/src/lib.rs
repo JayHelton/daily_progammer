@@ -15,22 +15,15 @@ extern "C" {
 }
 
 #[wasm_bindgen]
-pub fn translate(text: &str) -> String {
-    return ggg_translate(text);
+pub fn translate(key_mapping: &str, phrase: &str) -> String {
+    ggg_translate(key_mapping, phrase)
 }
 
 mod ggg_translation {
     use std::collections::HashMap;
 
-    pub fn ggg_translate(word: &str) -> String {
-        let morse_vec: Vec<&str> = "".split(" ").collect();
-        let offset: char = 'a';
-        word.chars()
-            .map(|x| {
-                let index = ((x as u32) - (offset as u32)) as usize;
-                *morse_vec.get(index).expect("Error getting morse value")
-            })
-            .collect()
+    pub fn ggg_translate(key_mapping: &str, phrase: &str) -> String {
+        ggg_decode(key_mapping, phrase)
     }
 
     fn ggg_decode(key_mapping: &str, phrase: &str) -> String {
