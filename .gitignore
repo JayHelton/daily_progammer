@@ -1,2 +1,5 @@
 target
-.idea
+/.idea/
+/dp_245/.idea
+/dp_245/client/public/
+/dp_245/.idea/misc.xml
