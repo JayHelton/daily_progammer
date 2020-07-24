@@ -22,6 +22,9 @@ func balanced(x string) bool {
 		}
 	}
 
+	if len(m) == 1 {
+		return false
+	}
 	for _, v := range m {
 		for _, vo2 := range m {
 			isBalanced = v == vo2
