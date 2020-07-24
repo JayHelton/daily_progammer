@@ -28,12 +28,12 @@ mod ggg_translation {
 
     fn ggg_decode(key_mapping: &str, phrase: &str) -> String {
         let mut accu: String = String::new();
-
         let mut keys: Vec<char> = Vec::new();
         let mut values: Vec<&str> = Vec::new();
         let mut decoded: Vec<char> = Vec::new();
 
         let keymaps: Vec<&str> = key_mapping.split(" ").collect();
+
         for (i, k) in keymaps.iter().enumerate() {
             let thing: Vec<char> = k.chars().collect();
 
@@ -43,9 +43,10 @@ mod ggg_translation {
                 values.push(k)
             }
         }
+
         let char_vec: Vec<char> = phrase.chars().collect();
+
         for c in char_vec {
-            println!("{}", c);
             if c != 'g' && c != 'G' {
                 decoded.push(c);
             } else {
@@ -59,13 +60,9 @@ mod ggg_translation {
                 }
             }
         }
-        println!("{:?}", values);
-        println!("{:?}", keys);
-        println!("{:?}", decoded);
+
         return decoded.iter().collect();
     }
-
-    fn ggg_encode() {}
 
     #[cfg(test)]
     mod ggg_translation_tests {
